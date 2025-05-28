@@ -13,7 +13,7 @@ def to_np(input_image):
     return np.array([], dtype=np.uint8)
 
 # Carrega as imagens mapa_1.png até mapa_15.png
-base_path = "/homes/joliveira/Desktop/Junior/Códigos/quebra-cabeça_aruco/Imagem/"
+base_path = "/minha_pasta/Imagem/"
 imagens = []
 for i in range(1, 16):
     filename = f"mapa_{i}.png"
@@ -31,7 +31,7 @@ arucoDetector = cv2.aruco.ArucoDetector(dictionary, parameters)
 
 # Conexão com broker
 camera_id = 1
-broker_uri = "amqp://guest:guest@10.10.2.211:30000"
+broker_uri = "amqp://rabbitmq:30000"
 channel = Channel(broker_uri)
 subscription = Subscription(channel=channel)
 subscription.subscribe(topic=f'CameraGateway.{camera_id}.Frame')
