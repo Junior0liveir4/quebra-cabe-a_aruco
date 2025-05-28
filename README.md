@@ -1,4 +1,3 @@
-
 # 🧩📷 Quebra-Cabeça ArUco – Entretenimento com Visão Computacional
 
 Este projeto é uma aplicação interativa que usa **marcadores ArUco** para montar dinamicamente um **quebra-cabeça com 15 peças**. Cada marcador detectado ativa a sobreposição de uma imagem correspondente em tempo real, criando um jogo visual de montagem baseado em visão computacional.
@@ -120,11 +119,4 @@ python3 quebra-cabeça_aruco.py
 
 ## 📬 Contato
 
-Para dúvidas, melhorias ou contribuições:
-**LabSEA – IFES Campus Guarapari**
-
----
-
-## 📜 Licença
-
-Este projeto é distribuído sob a licença MIT (ou conforme definido pelo autor).
+Para dúvidas ou sugestões, entre em contato com o time do LabSEA.
