@@ -67,7 +67,7 @@ A imagem ao vivo é recebida via **RabbitMQ**, usando a estrutura **IS-Wire**:
 
 - O broker utilizado no código padrão:
   ```
-  amqp://guest:guest@10.10.2.211:30000
+  amqp://rabbitmq:30000
   ```
 
 ---
@@ -92,27 +92,33 @@ python3 quebra-cabeça_aruco.py
 
 ## 🧪 O que o código faz
 
-- Recebe uma imagem de uma câmera via broker.
-- Detecta marcadores ArUco com `cv2.aruco.ArucoDetector`.
-- Para cada marcador (ID de 1 a 15), aplica:
-  - Transformação de perspectiva para alinhar a imagem ao marcador.
-  - Máscara para mesclar a imagem com o frame original.
-- Exibe o resultado com os marcadores sobrepostos e identificados.
+O sistema foi otimizado para melhor desempenho usando **multithreading**:
+
+- 🔀 Uma **thread de recepção** recebe continuamente os frames do broker e os armazena em uma fila, sempre mantendo o frame mais recente.
+- 🧠 Outra **thread de processamento** consome o último frame da fila, redimensiona para acelerar a detecção dos ArUcos e realiza:
+  - Detecção dos marcadores com `cv2.aruco.ArucoDetector`.
+  - Refinamento subpixel dos cantos para maior precisão.
+  - Reescalonamento dos cantos para a resolução original da imagem.
+  - Cálculo da transformação de perspectiva (`getPerspectiveTransform`) para alinhar a imagem à posição do marcador.
+  - Criação de máscara para sobreposição seletiva da imagem correspondente ao ID do ArUco.
+  - Aplicação da imagem `mapa_X.png` diretamente na resolução original, mantendo a qualidade.
+
+✅ Isso reduz atrasos perceptíveis e garante que a aplicação sempre processe o **frame mais recente**, mesmo se a taxa de publicação for alta.
 
 ---
 
 ## 🎥 Visualização
 
-- Uma janela em tela cheia é criada e atualizada em tempo real.
-- Cada imagem é desenhada sobre o marcador que representa sua "posição" no quebra-cabeça.
-- Quando todos os 15 marcadores estão corretamente posicionados, a imagem completa é formada visualmente.
+- Uma janela redimensionável chamada "Quebra-Cabeça" é atualizada em tempo real.
+- Cada imagem é desenhada sobre o marcador correspondente, sem contornos adicionais.
+- A resolução final preserva a qualidade original das imagens sobrepostas.
 
 ---
 
 ## 🎉 Finalidade
 
 - **Entretenimento interativo** usando visão computacional.
-- Demonstração prática de uso de marcadores ArUco com sobreposição visual.
+- Demonstração prática de uso de marcadores ArUco com sobreposição visual em tempo real.
 - Atividade divertida para exposições, feiras ou uso educacional.
 
 ---
